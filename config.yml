@@ -7,3 +7,4 @@ digitMaxHeight: 90
 digitYAlignment: 10
 ocrMaxDist: 600000.
 trainingDataFilename: "training.yml"
+
