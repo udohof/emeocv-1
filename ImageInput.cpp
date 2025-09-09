@@ -82,7 +82,8 @@ bool DirectoryInput::nextImage() {
 }
 
 CameraInput::CameraInput(int device) {
-    _capture.open(device);
+    _capture.open("libcamerasrc ! video/x-raw,width=1280,height=1024,format=RGB ! videoconvert ! appsink", cv::CAP_GSTREAMER);
+    std::cout << "[DEBUG] cap.isOpened(): " << _capture.isOpened() << std::endl;
 }
 
 bool CameraInput::nextImage() {

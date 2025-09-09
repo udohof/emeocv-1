@@ -252,7 +252,13 @@ int main(int argc, char **argv) {
                 inputCount++;
                 break;
             case 'c':
-                pImageInput = new CameraInput(atoi(optarg));
+                std::cout << "[DEBUG] Initialisiere Raspberry Pi Kamera auf Port 0..." << std::endl;
+                pImageInput = new CameraInput(0);
+                if (!pImageInput) {
+                    std::cerr << "[ERROR] CameraInput konnte nicht erzeugt werden!" << std::endl;
+                } else {
+                    std::cout << "[DEBUG] CameraInput erzeugt." << std::endl;
+                }
                 inputCount++;
                 break;
             case 'l':
@@ -292,6 +298,17 @@ int main(int argc, char **argv) {
     }
 
     configureLogging(logLevel, cmd == 'a');
+
+    // Nach der Initialisierung, vor dem Modus-Switch:
+    if (pImageInput) {
+        std::cout << "[DEBUG] Prüfe Kamera mit nextImage()..." << std::endl;
+        bool gotImage = pImageInput->nextImage();
+        if (!gotImage) {
+            std::cerr << "[ERROR] Kamera liefert kein Bild!" << std::endl;
+        } else {
+            std::cout << "[DEBUG] Kamera liefert ein Bild." << std::endl;
+        }
+    }
 
     switch (cmd) {
         case 'o':
